@@ -1,0 +1,230 @@
+### Architectural Document: Personalized Recommendation System Using Java
+
+---
+
+#### **1. Introduction**
+
+This architectural document outlines the design and structure of a Personalized Recommendation System implemented in Java. The system aims to deliver customized item suggestions to users based on their ratings and interactions with various items. The document covers system architecture, components, data structures, algorithms, and potential enhancements.
+
+---
+
+#### **2. System Overview**
+
+The Personalized Recommendation System uses collaborative filtering to recommend items to users based on their preferences and the preferences of similar users. The system consists of several key components that work together to provide personalized recommendations.
+
+---
+
+#### **3. Architecture**
+
+##### **3.1. High-Level Architecture**
+
+The system follows a modular architecture with the following key components:
+
+1. **Data Management Module**
+   - Handles user input, storage, and retrieval of ratings and item data.
+
+2. **Recommendation Engine**
+   - Computes user similarity and generates personalized recommendations.
+
+3. **Similarity Calculation Module**
+   - Calculates similarity scores between users to facilitate collaborative filtering.
+
+4. **User Interface (CLI)**
+   - Provides interaction with the system, allowing users to input ratings and view recommendations.
+
+5. **Sorting and Display Module**
+   - Sorts and displays recommendations based on relevance and predicted interest.
+
+##### **3.2. Component Diagram**
+
+```plaintext
++------------------------+
+|    User Interface      |
+|        (CLI)           |
++-----------+------------+
+            |
+            v
++-----------+------------+
+|   Data Management       |
+|       Module            |
++-----------+------------+
+            |
+            v
++-----------+------------+
+|   Recommendation Engine |
++-----------+------------+
+            |
+            v
++-----------+------------+
+| Similarity Calculation  |
+|        Module            |
++------------------------+
+```
+
+---
+
+#### **4. Components**
+
+##### **4.1. Data Management Module**
+
+- **Responsibilities:**
+  - Collect and store user ratings.
+  - Retrieve user ratings and item information.
+  - Maintain data consistency and integrity.
+
+- **Data Structures:**
+  - `Map<String, Map<String, Double>> userRatings`
+    - Stores user ratings where the key is the username and the value is a map of item ratings.
+  - `Map<String, Double> itemRatings`
+    - Stores item ratings where the key is the item ID and the value is the average rating.
+
+- **Methods:**
+  - `void addRating(String user, String item, double rating)`
+  - `Map<String, Double> getUserRatings(String user)`
+
+##### **4.2. Recommendation Engine**
+
+- **Responsibilities:**
+  - Generate recommendations based on user similarity and ratings.
+  - Aggregate ratings from similar users to recommend new items.
+
+- **Methods:**
+  - `Map<String, Double> recommendItems(String user)`
+
+##### **4.3. Similarity Calculation Module**
+
+- **Responsibilities:**
+  - Calculate similarity between users based on their rating patterns.
+  - Use similarity scores to influence recommendations.
+
+- **Methods:**
+  - `double calculateSimilarity(Map<String, Double> ratings1, Map<String, Double> ratings2)`
+
+- **Similarity Metric:**
+  - Cosine similarity or Pearson correlation.
+
+##### **4.4. User Interface (CLI)**
+
+- **Responsibilities:**
+  - Provide a command-line interface for users to interact with the system.
+  - Allow users to input ratings and view recommendations.
+
+- **Methods:**
+  - `void displayRecommendations(String user)`
+
+##### **4.5. Sorting and Display Module**
+
+- **Responsibilities:**
+  - Sort recommendations by score or relevance.
+  - Display sorted recommendations to the user.
+
+- **Methods:**
+  - `Map<String, Double> sortByValue(Map<String, Double> unsortedMap)`
+
+---
+
+#### **5. Data Flow**
+
+1. **User Input:**
+   - Users provide ratings through the CLI.
+   - Ratings are processed and stored in the Data Management Module.
+
+2. **Recommendation Generation:**
+   - The Recommendation Engine retrieves user ratings and calculates similarities using the Similarity Calculation Module.
+   - Recommendations are generated based on user similarity scores and stored in the Recommendations Map.
+
+3. **Displaying Recommendations:**
+   - Recommendations are sorted by relevance and displayed to the user through the CLI.
+
+---
+
+#### **6. Algorithms**
+
+##### **6.1. Similarity Calculation**
+
+- **Cosine Similarity Formula:**
+
+```java
+double calculateSimilarity(Map<String, Double> ratings1, Map<String, Double> ratings2) {
+    Set<String> commonItems = new HashSet<>(ratings1.keySet());
+    commonItems.retainAll(ratings2.keySet());
+    
+    if (commonItems.isEmpty()) return 0;
+    
+    double sum1 = 0, sum2 = 0, sumProduct = 0;
+    for (String item : commonItems) {
+        double rating1 = ratings1.get(item);
+        double rating2 = ratings2.get(item);
+        sum1 += rating1 * rating1;
+        sum2 += rating2 * rating2;
+        sumProduct += rating1 * rating2;
+    }
+    
+    return sumProduct / (Math.sqrt(sum1) * Math.sqrt(sum2));
+}
+```
+
+##### **6.2. Recommendation Generation**
+
+- **Basic Collaborative Filtering Approach:**
+
+```java
+Map<String, Double> recommendItems(String user) {
+    Map<String, Double> recommendations = new HashMap<>();
+    Map<String, Double> targetRatings = userRatings.get(user);
+    
+    if (targetRatings == null) return recommendations;
+    
+    for (String otherUser : userRatings.keySet()) {
+        if (otherUser.equals(user)) continue;
+        
+        Map<String, Double> otherRatings = userRatings.get(otherUser);
+        double similarity = calculateSimilarity(targetRatings, otherRatings);
+        
+        if (similarity <= 0) continue;
+        
+        for (Map.Entry<String, Double> entry : otherRatings.entrySet()) {
+            String item = entry.getKey();
+            double rating = entry.getValue();
+            
+            if (!targetRatings.containsKey(item)) {
+                recommendations.put(item, recommendations.getOrDefault(item, 0.0) + similarity * rating);
+            }
+        }
+    }
+    
+    return sortByValue(recommendations);
+}
+```
+
+---
+
+#### **7. Deployment and Scalability**
+
+- **Initial Deployment:**
+  - Implement and test the system in a local development environment.
+  - Prepare executable JAR or packaged application for distribution.
+
+- **Scalability Considerations:**
+  - For larger datasets, consider using databases for persistent storage.
+  - Explore more advanced algorithms (e.g., matrix factorization) and optimization techniques.
+
+---
+
+#### **8. Future Enhancements**
+
+- **Advanced Algorithms:**
+  - Implement matrix factorization or hybrid recommendation techniques for improved accuracy.
+
+- **User Interface:**
+  - Develop a graphical user interface (GUI) for enhanced user interaction.
+
+- **Integration:**
+  - Integrate with external data sources or APIs for richer recommendation capabilities.
+
+- **Performance Optimization:**
+  - Optimize data handling and similarity calculations for scalability and efficiency.
+
+---
+
+This architectural document provides a comprehensive overview of the Personalized Recommendation System, detailing its components, data flow, algorithms, and future considerations. It serves as a guide for implementation and further development of the system.

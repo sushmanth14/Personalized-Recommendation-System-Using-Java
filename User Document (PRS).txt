@@ -1,0 +1,70 @@
+User Document: Personalized Recommendation System Using Java
+
+Introduction:
+
+Welcome to the Personalized Recommendation System, a Java-based application designed to provide users with personalized recommendations based on their past behavior, preferences, and interests. This document will guide you through the process of using the system, including registration, logging in, viewing recommendations, and providing feedback.
+
+System Requirements:
+
+    Java Runtime Environment (JRE) 8 or later
+    A compatible web browser (e.g., Google Chrome, Mozilla Firefox)
+    Internet connection
+
+Registration:
+
+    Open a web browser and navigate to the system's URL.
+    Click on the "Register" button.
+    Fill out the registration form with your details, including username, password, and email address.
+    Click on the "Submit" button to complete the registration process.
+
+Logging In:
+
+    Open a web browser and navigate to the system's URL.
+    Click on the "Login" button.
+    Enter your username and password in the login form.
+    Click on the "Submit" button to log in to the system.
+
+Viewing Recommendations:
+
+    Once logged in, click on the "Recommendations" tab.
+    The system will display a list of personalized recommendations based on your past behavior, preferences, and interests.
+    Click on a recommendation to view more details.
+
+Providing Feedback:
+
+    After viewing a recommendation, click on the "Feedback" button.
+    Select a rating (e.g., 1-5 stars) and provide a brief comment.
+    Click on the "Submit" button to submit your feedback.
+
+User Profile:
+
+    Click on the "Profile" tab to view your user profile.
+    Update your profile information, including username, password, and email address.
+    Click on the "Save" button to save your changes.
+
+System Settings:
+
+    Click on the "Settings" tab to view system settings.
+    Update system settings, including recommendation algorithm and data storage options.
+    Click on the "Save" button to save your changes.
+
+Troubleshooting:
+
+    If you encounter any issues with the system, please contact the system administrator.
+    Check the system's FAQ page for answers to common questions.
+
+FAQs:
+
+    Q: How does the system generate recommendations? A: The system uses a collaborative filtering-based recommendation algorithm to generate personalized recommendations.
+    Q: Can I update my user profile? A: Yes, you can update your user profile by clicking on the "Profile" tab.
+    Q: How do I provide feedback on recommendations? A: You can provide feedback on recommendations by clicking on the "Feedback" button.
+
+Conclusion:
+
+Thank you for using the Personalized Recommendation System. We hope you find the system helpful in discovering new items and providing feedback on recommendations. If you have any questions or issues, please don't hesitate to contact us.
+
+Appendix:
+
+    System Architecture Diagram
+    Recommendation Algorithm Description
+    Data Storage Schema
